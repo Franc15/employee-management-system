@@ -50,4 +50,82 @@ public class EmployeeServiceImplTest {
         assertEquals(50000.0, savedEmployee.getSalary());
         verify(employeeRepository, times(1)).save(employee);
     }
+
+    @Test
+    @DisplayName("Get Employee By Id")
+    void getEmployeeById() {
+        Employee employee = new Employee();
+        employee.setId(1L);
+        employee.setFirstName("Francis");
+        employee.setLastName("Kikulwe");
+        employee.setEmail("francis@developer.com");
+        employee.setDepartment("IT");
+        employee.setSalary(50000.0);
+
+        when(employeeRepository.findById(1L)).thenReturn(java.util.Optional.of(employee));
+
+        Employee foundEmployee = employeeService.getEmployeeById(1L);
+
+        assertNotNull(foundEmployee);
+        assertEquals(1L, foundEmployee.getId());
+        assertEquals("Francis", foundEmployee.getFirstName());
+        assertEquals("Kikulwe", foundEmployee.getLastName());
+        assertEquals("francis@developer.com", foundEmployee.getEmail());
+        assertEquals("IT", foundEmployee.getDepartment());
+        assertEquals(50000.0, foundEmployee.getSalary());
+        verify(employeeRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    @DisplayName("Update Employee")
+    void updateEmployee() {
+        Employee employee = new Employee();
+        employee.setId(1L);
+        employee.setFirstName("Francis");
+        employee.setLastName("Kikulwe");
+        employee.setEmail("francis@developer.com");
+        employee.setDepartment("IT");
+        employee.setSalary(50000.0);
+
+        Employee employeeDetails = new Employee();
+        employeeDetails.setFirstName("Francis");
+        employeeDetails.setLastName("Kikulwe");
+        employeeDetails.setEmail("francis@developer.com");
+        employeeDetails.setDepartment("IT");
+        employeeDetails.setSalary(80000.0);
+
+        when(employeeRepository.findById(1L)).thenReturn(java.util.Optional.of(employee));
+        when(employeeRepository.save(any(Employee.class))).thenReturn(employee);
+
+        Employee updatedEmployee = employeeService.updateEmployee(1L, employeeDetails);
+
+        assertNotNull(updatedEmployee);
+        assertEquals(1L, updatedEmployee.getId());
+        assertEquals("Francis", updatedEmployee.getFirstName());
+        assertEquals("Kikulwe", updatedEmployee.getLastName());
+        assertEquals("francis@developer.com", updatedEmployee.getEmail());
+        assertEquals("IT", updatedEmployee.getDepartment());
+        assertEquals(80000.0, updatedEmployee.getSalary());
+        verify(employeeRepository, times(1)).findById(1L);
+        verify(employeeRepository, times(1)).save(employee);
+    }
+
+    @Test
+    @DisplayName("Delete Employee")
+    void deleteEmployee() {
+        Employee employee = new Employee();
+        employee.setId(1L);
+        employee.setFirstName("Francis");
+        employee.setLastName("Kikulwe");
+        employee.setEmail("francis@developer.com");
+        employee.setDepartment("IT");
+        employee.setSalary(50000.0);
+
+        when(employeeRepository.findById(1L)).thenReturn(java.util.Optional.of(employee));
+
+        employeeService.deleteEmployee(1L);
+
+        verify(employeeRepository, times(1)).findById(1L);
+        verify(employeeRepository, times(1)).delete(employee);
+    }
 }
