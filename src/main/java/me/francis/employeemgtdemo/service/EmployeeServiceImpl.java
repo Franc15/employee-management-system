@@ -4,9 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import me.francis.employeemgtdemo.model.Employee;
 import me.francis.employeemgtdemo.repository.EmployeeRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -24,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Page<Employee> getAllEmployees(Pageable pageable) {
-        return employeeRepository.findAll((org.springframework.data.domain.Pageable) pageable);
+        return employeeRepository.findAll(pageable);
     }
 
     @Override
